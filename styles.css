@@ -399,6 +399,36 @@ Notificaciones
 }
 
 /*
+Carrito
+*/
+.btnEliminar {
+    flex-flow: column wrap;
+    align-items: center;
+    display: flex;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    background-color: #1F2024;
+    text-decoration: none;
+    border-radius: .3125rem;
+};
+
+.btnFinalizar {
+    flex-flow: column wrap;
+    align-items: center;
+    display: flex;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    background-color: #264b2b;
+    text-decoration: none;
+    border-radius: .3125rem;
+};
+
+.productCarrito {
+    display: flex;
+    margin: .125rem;
+};
+
+/*
 Estilos responsivos
 */
 
