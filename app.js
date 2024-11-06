@@ -287,8 +287,40 @@ function mostrarResumenCarrito(carrito) {
     document.getElementById('btnFinalizarCompra').addEventListener('click', finalizarCompra);
 }
 
+
 // Función para manejar la finalización de la compra
 function finalizarCompra() {
+    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+    if (carrito.length === 0 || !usuario) {
+        alert("No hay productos en el carrito o no hay usuario registrado.");
+        return;
+    }
+
+    // Crear la notificación de compra
+    const totalProductos = carrito.length;
+    const sumaPrecios = carrito.reduce((total, producto) => total + producto.precio, 0).toFixed(2);
+    const productosComprados = carrito.map(producto => producto.producto).join(", ");
+    const fechaCompra = new Date();
+    const fechaFormateada = `${fechaCompra.getDate()}/${fechaCompra.getMonth() + 1}/${fechaCompra.getFullYear()} ${fechaCompra.getHours()}:${fechaCompra.getMinutes()}`;
+
+    const notificacionCompra = {
+        icon: '🛒',
+        titulo: 'Compra Realizada',
+        mensaje: `Compra realizada por ${usuario.nombre} ${usuario.apellido}. Email: ${usuario.email}. 
+                  Productos comprados: ${totalProductos} (${productosComprados}). 
+                  Precio total: $${sumaPrecios}. 
+                  Fecha de compra: ${fechaFormateada}. 
+                  Nos comunicaremos contigo a través de tu correo electrónico para ajustar los horarios de cursado y monitorear el protocolo de la compra.`
+    };
+
+    // Almacenar la notificación en el localStorage
+    const notificaciones = JSON.parse(localStorage.getItem('notificaciones')) || [];
+    notificaciones.push(notificacionCompra);
+    localStorage.setItem('notificaciones', JSON.stringify(notificaciones));
+    notificacionesBtn.innerText = "Notificaciones (+1)";
+
     alert("Gracias por tu compra. ¡Esperamos verte de nuevo!");
     localStorage.removeItem('carrito'); // Limpiar el carrito
     mostrarProductosEnCarrito(); // Actualizar la vista del carrito
@@ -352,8 +384,17 @@ function agregarEventosComprar() {
 }
 
 // Función para agregar el producto al carrito en localStorage
+// Función para agregar el producto al carrito en localStorage
 function agregarAlCarrito(producto) {
     let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+    // Verificar si el producto ya está en el carrito
+    const productoExistente = carrito.find(item => item.producto === producto.producto);
+    if (productoExistente) {
+        alert(`El producto ${producto.producto} ya está en el carrito.`);
+        return; // No agregar el producto si ya existe
+    }
+
     carrito.push(producto);
     localStorage.setItem('carrito', JSON.stringify(carrito));
     alert(`${producto.producto} ha sido añadido al carrito.`);
