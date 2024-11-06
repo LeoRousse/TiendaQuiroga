@@ -30,7 +30,7 @@ notificacionesBtn.addEventListener("click", () => {
     });
 
     // Vaciar el contenido previo de `main` y agregar las notificaciones
-    main.innerHTML = "";  // Limpia el contenido previo de `main`
+    main.innerHTML = "";
     main.appendChild(notificacionesContenido);
 });
 
@@ -60,7 +60,7 @@ btnUsuario.addEventListener("click", (event) => {
                 <input type="text" id="country" name="country" required>
             </div>
             <div class="form-group">
-                <label for="birthdate"> Fecha de nacimiento</label>
+                <label for="birthdate">Fecha de nacimiento</label>
                 <input type="date" id="birthdate" name="birthdate" required>
             </div>
             <div class="form-group">
@@ -87,7 +87,6 @@ btnUsuario.addEventListener("click", (event) => {
         </form>
     </section>`;
 
-    // Añadir el evento submit después de que el formulario haya sido agregado al DOM
     const formulario = document.getElementById("contactForm");
     formulario.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -106,8 +105,6 @@ btnUsuario.addEventListener("click", (event) => {
             alert("Las contraseñas no coinciden.");
             return; // Detiene el proceso si las contraseñas no coinciden
         }
-
-        console.log(`Los datos ingresados son: Sr/a ${nombre} ${apellido}, desde: ${ciudad} - ${pais}, fecha de nacimiento: ${nacimiento}, email: ${email}, profesión: ${profesion}, Usuario registrado correctamente!`);
 
         // Agregar notificaciones al localStorage
         const notificaciones = JSON.parse(localStorage.getItem('notificaciones')) || [];
@@ -136,22 +133,35 @@ btnUsuario.addEventListener("click", (event) => {
         };
         localStorage.setItem('usuario', JSON.stringify(usuario));
         notificacionesBtn.innerText = "Notificaciones (+2)";
+
+        // Cambiar el contenido del DOM para mostrar el mensaje de éxito
+        main.innerHTML = `
+        <section class="success-message">
+            <h2>Usuario Registrado Exitosamente</h2>
+            <p>Por favor revisa tu casillero de Notificaciones, ${nombre}!</p>
+        </section>`;
+
+        // Modificar el botón que despliega el formulario
+        const contenedor = btnUsuario.parentNode;
+        contenedor.removeChild(btnUsuario);
+
+        // Crear un nuevo elemento de texto
+        const textoBienvenida = document.createElement("p");
+        textoBienvenida.textContent = `Hola ${nombre} ${apellido}`;
+
+        // Agregar el nuevo elemento de texto al contenedor
+        contenedor.appendChild(textoBienvenida);
     });
 });
 
+// Verificar si el usuario ya está registrado al cargar la página
 const usuarioBienvenida = JSON.parse(localStorage.getItem('usuario')) || false;
 if (usuarioBienvenida) {
-    // Almacenar una referencia al contenedor del botón
     const contenedor = btnUsuario.parentNode;
-
-    // Eliminar el botón
     contenedor.removeChild(btnUsuario);
 
-    // Crear un nuevo elemento de texto
     const textoBienvenida = document.createElement("p");
-    textoBienvenida.textContent = `Hola ${JSON.parse(localStorage.getItem('usuario')).nombre} ${JSON.parse(localStorage.getItem('usuario')).apellido}`;
-
-    // Agregar el nuevo elemento de texto al contenedor
+    textoBienvenida.textContent = `Hola ${usuarioBienvenida.nombre} ${usuarioBienvenida.apellido}`;
     contenedor.appendChild(textoBienvenida);
 }
 
