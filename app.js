@@ -311,10 +311,9 @@ document.getElementById('carritoBtn').addEventListener('click', (event) => {
     mostrarProductosEnCarrito();
 });
 
-// Asegúrate de que esta función solo se llame una vez
 document.addEventListener('DOMContentLoaded', () => {
-    agregarEventosComprar(); // Asegúrate de que esta función se llame solo una vez
-    actualizarTextoCarrito(); // Actualizar el texto del botón al cargar la página
+    agregarEventosComprar(); 
+    actualizarTextoCarrito();
 });
 
 // Función para agregar el evento a los botones de compra
@@ -353,6 +352,6 @@ function agregarAlCarrito(producto) {
 
 // Llamar a la función para agregar eventos al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
-    agregarEventosComprar(); // Asegúrate de que esta función se llame solo una vez
-    actualizarTextoCarrito(); // Actualizar el texto del botón al cargar la página
+    agregarEventosComprar(); 
+    actualizarTextoCarrito(); 
 });
