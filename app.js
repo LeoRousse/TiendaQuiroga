@@ -312,7 +312,7 @@ function finalizarCompra() {
                   Productos comprados: ${totalProductos} (${productosComprados}). 
                   Precio total: $${sumaPrecios}. 
                   Fecha de compra: ${fechaFormateada}. 
-                  Nos comunicaremos contigo a través de tu correo electrónico para ajustar los horarios de cursado y monitorear el protocolo de la compra.`
+                  Nos comunicaremos contigo a través de tu correo electrónico para ajustar los horarios de cursado y monitorear el protocolo de la compra, Bienvenido/a a la era Digital!`
     };
 
     // Almacenar la notificación en el localStorage
