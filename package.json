@@ -1,0 +1,29 @@
+{
+  "name": "tienda",
+  "version": "1.0.0",
+  "description": "proyecto tiendaQuiroga",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier --write 'src/**/*.{js,ts,jsx,tsx,json,css,scss,md,html}'"
+},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LeoRousse/TiendaQuiroga.git"
+  },
+  "keywords": [
+    "tienda",
+    "ventas",
+    "cursos",
+    "aprendizaje"
+  ],
+  "author": "Leonardo Quiroga",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeoRousse/TiendaQuiroga/issues"
+  },
+  "homepage": "https://github.com/LeoRousse/TiendaQuiroga#readme",
+  "devDependencies": {
+    "prettier": "3.3.3"
+  }
+}

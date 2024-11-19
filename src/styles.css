@@ -1,0 +1,618 @@
+/* Reset de estilos por defecto del navegador */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-image: url('assets/fondo.png');
+  width: 100%; /* Ancho completo de la pantalla */
+  padding: 0.625rem;
+  display: grid;
+  grid-template-columns: 20% auto;
+  grid-template-rows: 1fr auto;
+  gap: 1.25rem;
+  grid-template-areas:
+    'header main'
+    'header footer';
+  height: 100vh; /* Altura completa de la pantalla */
+  overflow: hidden; /* Ocultar el scroll bar del body */
+}
+
+.grid-header {
+  grid-area: header;
+  padding: 1.25rem;
+  position: sticky; /* Anclar el header a la parte superior */
+  top: 0;
+  left: 0;
+  height: 100%; /* Ocupar toda la altura disponible */
+}
+
+.grid-main {
+  grid-area: main;
+  overflow-y: auto; /* Agregar scroll bar solo al main */
+}
+
+.grid-footer {
+  grid-area: footer;
+  background: #333;
+  color: #fff;
+  position: sticky; /* Anclar el footer a la parte inferior */
+  bottom: 0;
+  left: 0;
+  width: 100%; /* Ocupar toda la anchura disponible */
+  height: 10vh; /* Altura del footer */
+  border: 1px solid #ccc;
+}
+
+/* Estilos de encabezado y navegación */
+header {
+  background-image: url('assets/backCompras.jpg');
+  color: #fff;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.9375rem; /* Esquinas curvas */
+  overflow-y: auto; /* Scroll vertical si es necesario */
+}
+
+header nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+header nav .profile-img {
+  width: 9.55rem;
+  height: 9.55rem;
+  border: 2px solid black;
+  border-radius: 50%; /* Para hacerla circular */
+  display: block;
+  margin-bottom: 1rem; /* Margen abajo */
+}
+
+header nav .profile-text {
+  display: flex;
+  justify-content: center;
+  color: hsl(300, 43%, 57%);
+  text-shadow:
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black; /* Borde negro */
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+    'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: center;
+}
+
+header nav ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+header nav ul li {
+  margin-bottom: 1rem; /* Espacio abajo entre elementos */
+}
+
+header nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  display: block; /* Hacer los enlaces de bloque */
+  padding: 0.5rem 1rem; /* Espacio alrededor de los enlaces */
+  text-align: center;
+}
+
+header nav ul li a:hover {
+  background-color: #555; /* Cambiar el color de fondo al pasar el mouse */
+}
+
+.mobile-content {
+  display: none; /* Oculto por defecto */
+}
+
+/* HEADER SCROLLBAR */
+
+header::-webkit-scrollbar {
+  width: 10px; /* ancho del scroll */
+  height: 10px;
+  background-color: #333; /* color del fondo del scroll */
+}
+
+header::-webkit-scrollbar-thumb {
+  background-color: #666; /* color del botón del scroll */
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+header::-webkit-scrollbar-thumb:hover {
+  background-color: #888; /* color del botón del scroll al pasar el mouse */
+}
+
+/* Estilo general para las secciones */
+main section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #127369af; /* Color de fondo claro para el contenedor */
+  border: 2px solid #1f2024; /* Borde metálico */
+  border-radius: 0.9375rem; /* Esquinas curvas */
+  padding: 1.25rem; /* Espaciado interno */
+  margin-bottom: 1.25rem; /* Espaciado entre secciones */
+  box-shadow: 0 0.25rem 0.5rem 1.25rem rgba(0, 0, 0, 0.1); /* Sombra para darle profundidad */
+}
+
+/* Estilo para los encabezados dentro de las secciones */
+main section h2 {
+  font-family: 'Arial', sans-serif; /* Tipografía de los encabezados */
+  color: #a68f97; /* Color de los encabezados */
+  margin-bottom: 0.9375rem; /* Espaciado debajo de los encabezados */
+  font-size: 1.5rem; /* Tamaño del texto */
+  border-bottom: 2px solid #1f2024; /* Línea debajo del h2 */
+  padding-bottom: 0.625rem; /* Espaciado interno debajo del h2 */
+}
+
+/* Estilo para los párrafos */
+main section p {
+  font-family: 'Georgia', serif; /* Tipografía de los párrafos */
+  color: #a4b2ff; /* Color del texto */
+  line-height: 1.6; /* Altura de la línea */
+}
+
+/* Estilo para las imágenes */
+main section img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 80%; /* Ajuste automático del tamaño de la imagen */
+  border-radius: 0.625rem; /* Esquinas curvas */
+  margin-bottom: 0;
+}
+
+/*
+TIENDA
+*/
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px; /* Ajusta el espacio entre columnas y filas según tus necesidades */
+}
+
+.product {
+  display: flex;
+  align-items: center;
+  margin: 0.625rem;
+  padding: 1.25rem;
+  border: 1px solid #ccc;
+  border-radius: 0.625rem;
+}
+
+.product:hover {
+  transform: scale(1.04); /* Escala el bloque al 110% de su tamaño original */
+}
+
+.product h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.625rem;
+}
+
+.product.description {
+  margin-bottom: 0.9375rem;
+}
+
+.product img {
+  max-width: 100%;
+  height: 30%;
+  margin-bottom: 0.625rem;
+}
+
+.price {
+  display: flex;
+  justify-content: space-evenly;
+  font-weight: bold;
+  color: #03182e;
+  margin-bottom: 0.625rem;
+}
+
+.product.button:hover {
+  background-color: #0056b3;
+}
+
+.buttonB {
+  flex-flow: column wrap;
+  align-items: center;
+  display: flex;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  background-color: #1f2024;
+  text-decoration: none;
+  border-radius: 0.3125rem;
+}
+
+.button {
+  display: flex;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  background-color: #275f9b;
+  text-decoration: none;
+  border-radius: 0.3125rem;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+/*
+FOOTER
+*/
+
+/* Estilos de pie de página */
+footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1rem;
+  border: 2px solid #1f2024; /* Borde metálico */
+  border-radius: 0.9375rem; /* Esquinas curvas */
+}
+
+footer P {
+  margin-bottom: 0rem;
+}
+
+.buttonFooter {
+  display: flex;
+  padding: 0.2rem 0.5rem;
+  color: #b49595;
+  background-color: #00162c;
+  text-decoration: none;
+  border-radius: 0.5rem;
+}
+
+/*
+NUEVO USUARIO
+*/
+
+.register-form {
+  max-width: 25rem;
+  margin: 2.5rem auto;
+  padding: 1.25rem;
+  background-color: #001d37;
+  border: 0.0625rem solid #ccc;
+  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.1);
+}
+
+.register-form h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.625rem;
+  color: #ffffff;
+}
+
+.form-group input[type='text'],
+.form-group input[type='email'],
+.form-group input[type='password'],
+.form-group select {
+  width: 100%;
+  padding: 0.625rem;
+  border: 0.0625rem solid #ccc;
+}
+
+.form-group input[type='checkbox'] {
+  margin-right: 0.625rem;
+}
+
+.buttonC[type='submit'] {
+  background-color: #275f9b;
+  color: #fff;
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 0.3125rem;
+  cursor: pointer;
+}
+
+.buttonC[type='submit']:hover {
+  background-color: #134e2c;
+}
+
+.buttonC[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/*
+BOTONES DE CONTACTO
+*/
+
+/* Estilo para los botones de contacto */
+.redes {
+  display: flex;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.redes .contact-button {
+  display: inline-block; /* Convertir en botón */
+  border: 0.0625rem solid black;
+  border-radius: 0.3125rem; /* Esquinas curvas */
+  transition: transform 0.3s; /* Transición para el efecto hover */
+}
+
+/* Estilo para las imágenes dentro de los botones de contacto */
+.redes .contact-button img {
+  max-width: 1.6375rem; /* Tamaño máximo de la imagen */
+  border-radius: 0.625rem; /* Esquinas curvas de la imagen */
+}
+
+/* Colores específicos para cada plataforma */
+.redes .contact-button.instagram {
+  background-color: #e1306c; /* Color de fondo para Instagram */
+}
+
+.redes .contact-button.gmail {
+  background-color: #d44638; /* Color de fondo para Gmail */
+}
+
+.redes .contact-button.whatsapp {
+  background-color: #25d366; /* Color de fondo para WhatsApp */
+}
+
+.redes .contact-button.linkedin {
+  background-color: #fff; /* Color de fondo para Linkedin */
+}
+
+.redes .contact-button.github {
+  background-color: #555; /* Color de fondo para GitHub */
+}
+
+/* Efecto hover para los botones de contacto */
+.redes .contact-button:hover {
+  transform: scale(1.1); /* Aumentar tamaño al pasar el ratón */
+}
+
+/*
+Notificaciones
+*/
+.notification {
+  background-color: #7d3f5e54;
+  border-radius: 0.9375rem; /* Esquinas curvas */
+  border: 0.0625rem solid black;
+  margin: 0.125rem;
+  padding: 0.7125rem;
+}
+
+/*
+Carrito
+*/
+.btnEliminar {
+  flex-flow: column wrap;
+  align-items: center;
+  display: flex;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  background-color: #1f2024;
+  text-decoration: none;
+  border-radius: 0.3125rem;
+}
+
+.btnFinalizar {
+  flex-flow: column wrap;
+  align-items: center;
+  display: flex;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  background-color: #264b2b;
+  text-decoration: none;
+  border-radius: 0.3125rem;
+}
+
+.productCarrito {
+  display: flex;
+  margin: 0.125rem;
+}
+
+/*
+Estilos responsivos
+*/
+
+/* Media Queries */
+@media (min-width: 48rem) and (max-width: 62.5rem) {
+  header {
+    padding: 1rem; /* Aumentar el padding del header en tabletas */
+  }
+  header nav.profile-img {
+    width: 4rem; /* Aumentar tamaño de la imagen circular */
+    height: 4rem;
+  }
+  header nav ul li {
+    margin-bottom: 0.25rem; /* Ajustar espacio entre elementos */
+  }
+  header nav ul li a {
+    padding: 0.5rem 1rem; /* Ajustar espacio alrededor de los enlaces */
+  }
+
+  main {
+    margin-left: 1rem;
+    padding: 2rem;
+  }
+
+  .proyectos,
+  .products,
+  .blog-container {
+    flex-direction: row; /* Cambiar a fila para más espacio */
+    flex-wrap: wrap; /* Permitir que los elementos se ajusten */
+  }
+
+  .proyectoBack,
+  .product,
+  .blog {
+    flex-basis: 45%; /* Ajustar ancho para permitir dos elementos por fila */
+    margin: 1rem; /* Añadir margen para separación */
+  }
+
+  .grid-container {
+    grid-template-columns: 1fr 3fr 1fr; /* Ajustar columnas para tabletas */
+    grid-template-rows: 25% 60% 15%;
+    grid-template-areas:
+      'header header header'
+      'main main main'
+      'footer footer footer';
+  }
+  .grid-header {
+    height: auto; /* Ajustar altura del header */
+  }
+  .grid-main {
+    height: 95%; /* Ajustar altura del main */
+    padding: 1rem;
+  }
+  .grid-footer {
+    height: auto; /* Ajustar altura del footer */
+  }
+  .products {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.625rem; /* Ajusta el espacio entre columnas y filas según tus necesidades */
+  }
+}
+
+@media (max-width: 48rem) {
+  body {
+    padding: 0rem;
+    padding-right: 0rem;
+  }
+
+  .grid-container {
+    grid-template-columns: 100%;
+    grid-template-rows: 20% 65% 15%;
+    grid-template-areas:
+      'header'
+      'main'
+      'footer';
+  }
+  .grid-header {
+    height: 100%; /* Ocupa el 100% de la altura en vista móvil */
+    padding: 0.625rem;
+  }
+  .grid-main {
+    height: 96%; /* Ajusta la altura del main en vista móvil */
+    padding: 0.0625rem;
+  }
+  .grid-footer {
+    width: 75%;
+    height: 15%; /* Ajusta la altura del footer en vista móvil */
+  }
+
+  header {
+    padding: 0.5rem; /* Reducir el padding en mobile */
+  }
+
+  header nav {
+    flex-direction: row; /* Cambiar a dirección de fila en mobile */
+    align-items: flex-start; /* Alinear elementos al inicio */
+    justify-content: space-between; /* Espacio entre los elementos */
+  }
+
+  header nav .profile-img {
+    width: 3rem; /* Reducir el tamaño de la imagen */
+    height: 3rem;
+    margin-bottom: 0rem;
+  }
+
+  header nav .profile-text {
+    font-size: 0.75rem; /* Reducir tamaño de la fuente */
+    text-align: left;
+    margin-left: 0.5rem; /* Añadir espacio a la izquierda del texto */
+  }
+
+  header nav ul {
+    margin-top: 0; /* Eliminar el margen superior */
+    margin-left: auto; /* Mover el menú a la derecha */
+    width: auto; /* Ajustar el ancho del menú */
+  }
+
+  header nav ul li {
+    margin-bottom: 0.5rem; /* Reducir espacio entre los elementos */
+  }
+
+  header nav ul li a {
+    padding: 0.25rem 0.5rem; /* Reducir padding de los enlaces */
+  }
+
+  .navbar-nav .nav-link.active,
+  .navbar-nav .nav-link.show {
+    color: #ccc;
+  }
+
+  a.nav-link.active {
+    margin: 0.625rem;
+  }
+
+  .desktop-content {
+    display: none; /* Ocultar en móvil */
+  }
+
+  .mobile-content {
+    display: block; /* Mostrar en móvil */
+  }
+
+  a.nav-link.active {
+    flex-flow: column wrap;
+    align-items: center;
+    display: flex;
+    padding: 0.5rem 1rem;
+    color: #fff;
+    background-color: #03182eb7;
+    border-radius: 0.3125rem;
+  }
+
+  a.navbar-brand {
+    margin: 0rem 0.2rem 0rem 0.2rem;
+  }
+
+  .navbar {
+    background-color: #60aae180; /* Ajusta el color de fondo si es necesario */
+    border-radius: 0.5rem;
+  }
+
+  footer {
+    padding: 0;
+  }
+
+  .grid-footer {
+    width: 100%; /* Ocupar toda la anchura disponible */
+    height: 80%; /* Altura del footer */
+  }
+
+  .products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+}
+
+.signature {
+  text-align: center;
+  color: #7f79cc;
+  text-shadow:
+    -1px -1px 0 black,
+    1px -1px 0 black,
+    -1px 1px 0 black,
+    1px 1px 0 black;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
