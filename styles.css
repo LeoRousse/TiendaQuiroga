@@ -65,6 +65,13 @@ header nav {
   align-items: center;
 }
 
+.media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
 header nav .profile-img {
   width: 9.55rem;
   height: 9.55rem;

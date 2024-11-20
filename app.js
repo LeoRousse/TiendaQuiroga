@@ -14,11 +14,10 @@ notificacionesBtn.addEventListener('click', () => {
   notificacionesContenido.innerHTML = `<h2>Notificaciones:</h2>`;
 
   // Recuperar las notificaciones del localStorage
-  const notificaciones =
-    JSON.parse(localStorage.getItem('notificaciones')) || [];
+  const notificaciones = JSON.parse(localStorage.getItem('notificaciones')) || [];
 
   // Agregar las notificaciones al contenedor
-  notificaciones.forEach((notificacion) => {
+  notificaciones.forEach((notificacion, index) => {
     const div = document.createElement('div');
     div.className = 'notification';
     div.innerHTML = `
@@ -26,6 +25,7 @@ notificacionesBtn.addEventListener('click', () => {
             <div class="content">
                 <h3>${notificacion.titulo}</h3>
                 <p>${notificacion.mensaje}</p>
+                ${notificacion.borrable ? `<button class="btn-cancelar" onclick="cancelarNotificacion(${index})">Cancelar Compra</button>` : ''}
             </div>`;
     notificacionesContenido.appendChild(div);
   });
@@ -35,126 +35,187 @@ notificacionesBtn.addEventListener('click', () => {
   main.appendChild(notificacionesContenido);
 });
 
-// Crear Usuario.
-const btnUsuario = document.getElementById('btnUsuario');
 
-btnUsuario.addEventListener('click', (event) => {
+//seccion de inicio:
+document.getElementById('inicioBtn').addEventListener('click', function(event) {
   event.preventDefault();
   main.innerHTML = `
-    <section class="register-form">
-        <h2>Crear cuenta</h2>
-        <form id="contactForm">
-            <div class="form-group">
-                <label for="name">Nombre</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="surname">Apellido</label>
-                <input type="text" id="surname" name="surname" required>
-            </div>
-            <div class="form-group">
-                <label for="city">Ciudad</label>
-                <input type="text" id="city" name="city" required>
-            </div>
-            <div class="form-group">
-                <label for="country">País</label>
-                <input type="text" id="country" name="country" required>
-            </div>
-            <div class="form-group">
-                <label for="birthdate">Fecha de nacimiento</label>
-                <input type="date" id="birthdate" name="birthdate" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Correo electrónico</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-                <label for="profession">Profesión</label>
-                <input type="text" id="profession" name="profession" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">Confirmar contraseña</label>
-                <input type="password" id="confirm-password" name="confirm-password" required>
-            </div>
-            <div class="form-group">
-                <input type="checkbox" id="terms" name="terms" required>
-                <label for="terms">He leído y estoy de acuerdo con los: <a href="assets/Terminos_y_Condiciones.pdf">términos y condiciones</a></label>
-            </div>
-            <button class="buttonC" type="submit" id="submit">Crear cuenta</button>
-        </form>
-    </section>`;
+  <section class="login-form">
+  <h2>Iniciar Sesión</h2>
+  <div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="loginEmail">Correo electrónico</label>
+        <input type="email" id="loginEmail" name="loginEmail" required>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">Contraseña</label>
+        <input type="password" id="loginPassword" name="loginPassword" required>
+      </div>
+      <button type="submit" id="loginBtn">Iniciar Sesión</button>
+
+    </form>
+  </div>
+  <br><br>
+  <div id="comments-section">
+    <h3>Comentarios de Usuarios</h3>
+    <ul id="comments-list"></ul>
+  </div>
+  </section>`;
+  loadComments();
+
+  const loginForm = document.getElementById('loginForm');
+  loginForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const loginEmail = document.getElementById('loginEmail').value;
+      const loginPassword = document.getElementById('loginPassword').value;
+
+      // Obtener el usuario del localStorage
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+      // Verificar si el usuario existe y si la contraseña es correcta
+      if (usuario && usuario.email === loginEmail && usuario.contraseña === loginPassword) {
+          swal("Éxito", `Bienvenido/a ${usuario.nombre} ${usuario.apellido}`, "success");
+      } else {
+          swal("Error", "Correo electrónico o contraseña incorrectos", "error");
+      }
+  });
+});
+
+// Crear Usuario
+const btnUsuario = document.getElementById('btnUsuario');
+
+const handleRegister = (event) => {
+  event.preventDefault();
+  main.innerHTML = `
+      <section class="register-form">
+          <h2>Crear cuenta</h2>
+          <form id="contactForm">
+              <div class="form-group">
+                  <label for="name">Nombre</label>
+                  <input type="text" id="name" name="name" required>
+              </div>
+              <div class="form-group">
+                  <label for="surname">Apellido</label>
+                  <input type="text" id="surname" name="surname" required>
+              </div>
+              <div class="form-group">
+                  <label for="city">Ciudad</label>
+                  <input type="text" id="city" name="city" required>
+              </div>
+              <div class="form-group">
+                  <label for="country">País</label>
+                  <input type="text" id="country" name="country" required>
+              </div>
+              <div class="form-group">
+                  <label for="birthdate">Fecha de nacimiento</label>
+                  <input type="date" id="birthdate" name="birthdate" required>
+              </div>
+              <div class="form-group">
+                  <label for="email">Correo electrónico</label>
+                  <input type="email" id="email" name="email" required>
+              </div>
+              <div class="form-group">
+                  <label for="profession">Profesión</label>
+                  <input type="text" id="profession" name="profession" required>
+              </div>
+              <div class="form-group">
+                  <label for="password">Contraseña</label>
+                  <input type="password" id="password" name="password" required>
+              </div>
+              <div class="form-group">
+                  <label for="confirm-password">Confirmar contraseña</label>
+                  <input type="password" id="confirm-password" name="confirm-password" required>
+              </div>
+              <div class="form-group">
+                  <input type="checkbox" id=" terms" name="terms" required>
+                  <label for="terms">He leído y estoy de acuerdo con los: <a href="assets/Terminos_y_Condiciones.pdf">términos y condiciones</a></label>
+              </div>
+              <button class="buttonC" type="submit" id="submit">Crear cuenta</button>
+          </form>
+      </section>`;
 
   const formulario = document.getElementById('contactForm');
   formulario.addEventListener('submit', function (event) {
-    event.preventDefault();
-    const nombre = document.getElementById('name').value;
-    const apellido = document.getElementById('surname').value;
-    const ciudad = document.getElementById('city').value;
-    const pais = document.getElementById('country').value;
-    const nacimiento = document.getElementById('birthdate').value;
-    const email = document.getElementById('email').value;
-    const profesion = document.getElementById('profession').value;
-    const contraseña1 = document.getElementById('password').value;
-    const contraseña2 = document.getElementById('confirm-password').value;
+      event.preventDefault();
+      const nombre = document.getElementById('name').value;
+      const apellido = document.getElementById('surname').value;
+      const ciudad = document.getElementById('city').value;
+      const pais = document.getElementById('country').value;
+      const nacimiento = document.getElementById('birthdate').value;
+      const email = document.getElementById('email').value;
+      const profesion = document.getElementById('profession').value;
+      const contraseña1 = document.getElementById('password').value;
+      const contraseña2 = document.getElementById('confirm-password').value;
 
-    // Verificar si las contraseñas coinciden
-    if (contraseña1 !== contraseña2) {
-      alert('Las contraseñas no coinciden.');
-      return; // Detiene el proceso si las contraseñas no coinciden
-    }
+      // Verificar si las contraseñas coinciden
+      if (contraseña1 !== contraseña2) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Las contraseñas no coinciden.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        return; // Detiene el proceso si las contraseñas no coinciden
+      } else {
+        Swal.fire({
+          title: 'Usuario registrado exitosamente',
+          text: 'Revisa tu bandeja de notificaciones.',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        });
+      };
 
-    // Agregar notificaciones al localStorage
-    const notificaciones =
-      JSON.parse(localStorage.getItem('notificaciones')) || [];
-    notificaciones.push({
-      icon: 'ℹ️',
-      titulo: 'Información:',
-      mensaje: `Bienvenido/a a nuestra tienda, muchas gracias por elegirnos, al registrarte podrás estar al tanto de nuestros nuevos cursos y productos, así como eventos, ofertas y novedades de nuestra comunidad digital que constantemente está creciendo, ¡Bienvenido/a!`,
-    });
-    notificaciones.push({
-      icon: '✔️',
-      titulo: 'Usuario registrado exitosamente!',
-      mensaje: `Los datos ingresados son: Sr/a ${nombre} ${apellido}, desde: ${ciudad} - ${pais}, fecha de nacimiento: ${nacimiento}, email: ${email}, profesión: ${profesion}, Usuario registrado correctamente!`,
-    });
-    localStorage.setItem('notificaciones', JSON.stringify(notificaciones));
+      // Agregar notificaciones al localStorage
+      const notificaciones =
+          JSON.parse(localStorage.getItem('notificaciones')) || [];
+          notificaciones.push({
+          icon: 'ℹ️',
+          titulo: 'Información:',
+          mensaje: `Bienvenido/a a nuestra tienda, muchas gracias por elegirnos, al registrarte podrás estar al tanto de nuestros nuevos cursos y productos, así como eventos, ofertas y novedades de nuestra comunidad digital que constantemente está creciendo, ¡Bienvenido/a!`,
+      });
+      notificaciones.push({
+          icon: '✔️',
+          titulo: 'Usuario registrado exitosamente!',
+          mensaje: `Los datos ingresados son: Sr/a ${nombre} ${apellido}, desde: ${ciudad} - ${pais}, fecha de nacimiento: ${nacimiento}, email: ${email}, profesión: ${profesion}, Usuario registrado correctamente!`,
+      });
+      localStorage.setItem('notificaciones', JSON.stringify(notificaciones));
 
-    // Almacenar la información del usuario en el localStorage
-    const usuario = {
-      nombre,
-      apellido,
-      ciudad,
-      pais,
-      nacimiento,
-      email,
-      profesion,
-      contraseña: contraseña1,
-    };
-    localStorage.setItem('usuario', JSON.stringify(usuario));
-    notificacionesBtn.innerText = 'Notificaciones (+2)';
+      // Almacenar la información del usuario en el localStorage
+      const usuario = {
+          nombre,
+          apellido,
+          ciudad,
+          pais,
+          nacimiento,
+          email,
+          profesion,
+          contraseña: contraseña1,
+      };
+      localStorage.setItem('usuario', JSON.stringify(usuario));
+      notificacionesBtn.innerText = 'Notificaciones (+2)';
 
-    // Cambiar el contenido del DOM para mostrar el mensaje de éxito
-    main.innerHTML = `
-        <section class="success-message">
-            <h2>Usuario Registrado Exitosamente</h2>
-            <p>Por favor revisa tu casillero de Notificaciones, ${nombre}!</p>
-        </section>`;
+      // Cambiar el contenido del DOM para mostrar el mensaje de éxito
+      main.innerHTML = `
+          <section class="success-message">
+              <h2>Usuario Registrado Exitosamente</h2>
+              <p>Por favor revisa tu casillero de Notificaciones, ${nombre}!</p>
+          </section>`;
 
-    // Modificar el botón que despliega el formulario
-    const contenedor = btnUsuario.parentNode;
-    contenedor.removeChild(btnUsuario);
+      // Modificar el botón que despliega el formulario
+      const contenedor = btnUsuario.parentNode;
+      contenedor.removeChild(btnUsuario);
 
-    // Crear un nuevo elemento de texto
-    const textoBienvenida = document.createElement('p');
-    textoBienvenida.textContent = `Hola ${nombre} ${apellido}`;
+      // Crear un nuevo elemento de texto
+      const textoBienvenida = document.createElement('p');
+      textoBienvenida.textContent = `Hola ${nombre} ${apellido}`;
 
-    // Agregar el nuevo elemento de texto al contenedor
-    contenedor.appendChild(textoBienvenida);
+      // Agregar el nuevo elemento de texto al contenedor
+      contenedor.appendChild(textoBienvenida);
   });
-});
+};
+
+btnUsuario.addEventListener('click', handleRegister);
 
 // Verificar si el usuario ya está registrado al cargar la página
 const usuarioBienvenida = JSON.parse(localStorage.getItem('usuario')) || false;
@@ -243,9 +304,12 @@ function agregarEventosComprar() {
 
         const usuario = localStorage.getItem('usuario');
         if (!usuario) {
-          alert(
-            'Debes crear un usuario primero, para poder acceder a nuestros cursos y productos.',
-          );
+          Swal.fire({
+            title: 'Acceso Denegado',
+            text: 'Debes crear un usuario primero, para poder acceder a nuestros cursos y productos.',
+            icon: 'warning',
+            confirmButtonText: 'Aceptar'
+          });
         } else {
           // Obtener el producto correspondiente
           const productoSeleccionado = productos[index];
@@ -267,13 +331,23 @@ function agregarAlCarrito(producto) {
     (item) => item.producto === producto.producto,
   );
   if (productoExistente) {
-    alert(`El producto ${producto.producto} ya está en el carrito.`);
+    Swal.fire({
+      title: 'Producto Existente',
+      text: `El producto ${producto.producto} ya está en el carrito.`,
+      icon: 'info',
+      confirmButtonText: 'Aceptar'
+    });
     return; // No agregar el producto si ya existe
   }
 
   carrito.push(producto);
   localStorage.setItem('carrito', JSON.stringify(carrito));
-  alert(`${producto.producto} ha sido añadido al carrito.`);
+  Swal.fire({
+    title: 'Producto Añadido',
+    text: `${producto.producto} ha sido añadido al carrito.`,
+    icon: 'success',
+    confirmButtonText: 'Aceptar'
+  });
   actualizarTextoCarrito(); // Actualizar el texto del botón después de agregar
 }
 
@@ -355,7 +429,12 @@ function finalizarCompra() {
   const usuario = JSON.parse(localStorage.getItem('usuario'));
 
   if (carrito.length === 0 || !usuario) {
-    alert('No hay productos en el carrito o no hay usuario registrado.');
+    Swal.fire({
+      title: 'Error',
+      text: 'No hay productos en el carrito o no hay usuario registrado.',
+      icon: 'warning',
+      confirmButtonText: 'Aceptar'
+    });
     return;
   }
 
@@ -378,27 +457,63 @@ function finalizarCompra() {
                   Precio total: $${sumaPrecios}. 
                   Fecha de compra: ${fechaFormateada}. 
                   Nos comunicaremos contigo a través de tu correo electrónico para ajustar los horarios de cursado y monitorear el protocolo de la compra, Bienvenido/a a la era Digital!`,
+    borrable: true // Esta notificación es borrable
   };
 
   // Almacenar la notificación en el localStorage
-  const notificaciones =
-    JSON.parse(localStorage.getItem('notificaciones')) || [];
+  const notificaciones = JSON.parse(localStorage.getItem('notificaciones')) || [];
   notificaciones.push(notificacionCompra);
   localStorage.setItem('notificaciones', JSON.stringify(notificaciones));
   notificacionesBtn.innerText = 'Notificaciones (+1)';
 
-  alert('Gracias por tu compra. ¡Esperamos verte de nuevo!');
+  Swal.fire({
+    title: 'Compra Exitosa',
+    text: 'Gracias por tu compra. ¡Esperamos verte de nuevo!',
+    icon: 'success',
+    confirmButtonText: 'Aceptar'
+  });
+  
   localStorage.removeItem('carrito'); // Limpiar el carrito
   mostrarProductosEnCarrito(); // Actualizar la vista del carrito
+}
+
+// Función para cancelar la notificación
+function cancelarNotificacion(index) {
+  // Recuperar las notificaciones del localStorage
+  const notificaciones = JSON.parse(localStorage.getItem('notificaciones')) || [];
+
+  // Verificar si el índice es válido
+  if (index < 0 || index >= notificaciones.length) {
+    console.error('Índice fuera de límites:', index);
+    return; // Salir de la función si el índice no es válido
+  }
+
+  // Eliminar la notificación en el índice especificado
+  notificaciones.splice(index, 1);
+
+  // Actualizar el localStorage
+  localStorage.setItem('notificaciones', JSON.stringify(notificaciones));
+
+  // Actualizar la vista de notificaciones
+  notificacionesBtn.click(); // Simular un clic en el botón de notificaciones para refrescar la vista
 }
 
 // Función para eliminar un producto del carrito
 function eliminarDelCarrito(index) {
   let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  const productoEliminado = carrito[index].producto; // Obtener el nombre del producto a eliminar
   carrito.splice(index, 1); // Eliminar el producto en el índice especificado
   localStorage.setItem('carrito', JSON.stringify(carrito)); // Actualizar el localStorage
   actualizarTextoCarrito(); // Actualizar el texto del botón
   mostrarProductosEnCarrito(); // Volver a mostrar los productos en el carrito
+
+  // Notificación de eliminación
+  Swal.fire({
+    title: 'Producto Eliminado',
+    text: `El producto ${productoEliminado} ha sido eliminado del carrito.`,
+    icon: 'success',
+    confirmButtonText: 'Aceptar'
+  });
 }
 
 // Función para agregar eventos a los botones de eliminar
@@ -429,3 +544,44 @@ document.addEventListener('DOMContentLoaded', () => {
   agregarEventosComprar();
   actualizarTextoCarrito();
 });
+
+// Integracion de inicioBtn y SweetAlert
+document.getElementById('inicioBtn').addEventListener('click', function(event) {
+  event.preventDefault();
+  loadComments();
+});
+
+// Función para cargar comentarios desde JSONPlaceholder
+function loadComments() {
+  fetch('https://jsonplaceholder.typicode.com/comments')
+      .then(response => response.json())
+      .then(data => {
+          const commentsList = document.getElementById('comments-list');
+          commentsList.innerHTML = '';
+
+          const fakeUsers = [
+              { name: 'Juan Pérez', email: 'juan99perez@gmail.com' },
+              { name: '⭐ María López', email: 'maria.lopkey@hotmail.com' },
+              { name: 'Carlos Sánchez', email: 'carlos.sanchez@gmail.com' },
+              { name: '😀 Ana García', email: 'ana.garcia@yahoo.com' },
+              { name: '🏆 Luis Martínez', email: 'luis-martinez66@gmail.com' },
+              { name: 'Laura Rodríguez', email: 'laura.rodriguez@hotmail.com' },
+              { name: '😊 Pedro Fernández', email: 'pedrito_fernandez@gmail.com' },
+          ];
+
+          data.slice(0, 7).forEach((comment, index) => {
+              const listItem = document.createElement('li');
+              const user = fakeUsers[index % fakeUsers.length]; // Ciclo a través de los usuarios ficticios
+              listItem.innerHTML = `
+                  <strong>${user.name}</strong> (${user.email}): ${comment.body} 
+                  <span role="img" aria-label="thumbs up">👍</span>
+              `;
+              
+              commentsList.appendChild(listItem);
+          });
+      })
+      .catch(error => {
+          console.error('Error al cargar los comentarios:', error);
+      });
+}
+
