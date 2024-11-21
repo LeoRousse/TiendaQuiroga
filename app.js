@@ -506,11 +506,14 @@ function finalizarCompra() {
   const notificacionCompra = {
     icon: '🛒',
     titulo: 'Compra Realizada',
-    mensaje: `Compra realizada por ${usuario.nombre} ${usuario.apellido}. Email: ${usuario.email}. 
-                  Productos comprados: ${totalProductos} (${productosComprados}). 
-                  Precio total: $${sumaPrecios}. 
-                  Fecha de compra: ${fechaFormateada}. 
-                  Nos comunicaremos contigo a través de tu correo electrónico para ajustar los horarios de cursado y monitorear el protocolo de la compra, Bienvenido/a a la era Digital!`,
+    mensaje: `
+      <strong>Compra realizada por:</strong> ${usuario.nombre} ${usuario.apellido}<br>
+      <strong>Email:</strong> ${usuario.email}<br>
+      <strong>Productos comprados:</strong> ${totalProductos} (${productosComprados})<br>
+      <strong>Precio total:</strong> $${sumaPrecios}<br>
+      <strong>Fecha de compra:</strong> ${fechaFormateada}<br>
+      Nos comunicaremos contigo a través de tu correo electrónico para ajustar los horarios de cursado y monitorear el protocolo de la compra. ¡Bienvenido/a a la era Digital!
+    `,
     borrable: true // Esta notificación es borrable
   };
 
