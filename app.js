@@ -25,15 +25,59 @@ notificacionesBtn.addEventListener('click', () => {
             <div class="content">
                 <h3>${notificacion.titulo}</h3>
                 <p>${notificacion.mensaje}</p>
-                ${notificacion.borrable ? `<button class="btn-cancelar" onclick="cancelarNotificacion(${index})">Cancelar Compra</button>` : ''}
+                ${notificacion.borrable ? `<button class="btn-cancelar" data-index="${index}">Cancelar Compra</button>` : ''}
             </div>`;
     notificacionesContenido.appendChild(div);
   });
 
   // Vaciar el contenido previo de `main` y agregar las notificaciones
-  main.innerHTML = '';
+  main.innerHTML= '';
   main.appendChild(notificacionesContenido);
+
+  // Agregar evento a los botones de cancelar
+  const botonesCancelar = document.querySelectorAll('.btn-cancelar');
+  botonesCancelar.forEach(boton => {
+    boton.addEventListener('click', (event) => {
+      const index = event.target.getAttribute('data-index');
+      cancelarNotificacion(index);
+    });
+  });
 });
+
+// Función para cancelar la notificación
+function cancelarNotificacion(index) {
+  // Mostrar alerta de que se está cancelando la compra
+  Swal.fire({
+    title: 'Cancelando Compra',
+    text: 'Por favor, espere...',
+    icon: 'info',
+    showConfirmButton: false,
+    allowOutsideClick: false
+  });
+
+  // Simular un proceso de carga
+  setTimeout(() => {
+    // Recuperar las notificaciones del localStorage
+    let notificaciones = JSON.parse(localStorage.getItem('notificaciones')) || [];
+
+    // Eliminar la notificación correspondiente
+    if (index >= 0 && index < notificaciones.length) {
+      notificaciones.splice(index, 1); // Eliminar la notificación
+      localStorage.setItem('notificaciones', JSON.stringify(notificaciones)); // Actualizar el localStorage
+    }
+
+    // Mostrar alerta de que la compra ha sido eliminada correctamente
+    Swal.fire({
+      title: 'Compra Cancelada',
+      text: 'La compra ha sido eliminada correctamente.',
+      icon: 'success',
+      confirmButtonText: 'Aceptar'
+    });
+
+    // Volver a cargar las notificaciones
+    notificacionesBtn.click(); // Esto volverá a cargar las notificaciones en el DOM
+  }, 3000); // Esperar 3 segundos
+}
 
 
 //seccion de inicio:
@@ -75,10 +119,20 @@ document.getElementById('inicioBtn').addEventListener('click', function(event) {
 
       // Verificar si el usuario existe y si la contraseña es correcta
       if (usuario && usuario.email === loginEmail && usuario.contraseña === loginPassword) {
-          swal("Éxito", `Bienvenido/a ${usuario.nombre} ${usuario.apellido}`, "success");
-      } else {
-          swal("Error", "Correo electrónico o contraseña incorrectos", "error");
-      }
+        Swal.fire({
+            title: 'Éxito',
+            text: `Bienvenido/a ${usuario.nombre} ${usuario.apellido}`,
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+        });
+    } else {
+        Swal.fire({
+            title: 'Error',
+            text: 'Correo electrónico o contraseña incorrectos',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+    }
   });
 });
 
@@ -465,7 +519,9 @@ function finalizarCompra() {
   notificaciones.push(notificacionCompra);
   localStorage.setItem('notificaciones', JSON.stringify(notificaciones));
   notificacionesBtn.innerText = 'Notificaciones (+1)';
-
+  const carritoBtn = document.getElementById('carritoBtn');
+  carritoBtn.textContent = 'Ver carrito';
+  
   Swal.fire({
     title: 'Compra Exitosa',
     text: 'Gracias por tu compra. ¡Esperamos verte de nuevo!',
@@ -477,30 +533,20 @@ function finalizarCompra() {
   mostrarProductosEnCarrito(); // Actualizar la vista del carrito
 }
 
-// Función para cancelar la notificación
-function cancelarNotificacion(index) {
-  // Recuperar las notificaciones del localStorage
-  const notificaciones = JSON.parse(localStorage.getItem('notificaciones')) || [];
-
-  // Verificar si el índice es válido
-  if (index < 0 || index >= notificaciones.length) {
-    console.error('Índice fuera de límites:', index);
-    return; // Salir de la función si el índice no es válido
-  }
-
-  // Eliminar la notificación en el índice especificado
-  notificaciones.splice(index, 1);
-
-  // Actualizar el localStorage
-  localStorage.setItem('notificaciones', JSON.stringify(notificaciones));
-
-  // Actualizar la vista de notificaciones
-  notificacionesBtn.click(); // Simular un clic en el botón de notificaciones para refrescar la vista
-}
-
 // Función para eliminar un producto del carrito
 function eliminarDelCarrito(index) {
   let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+  // Verificar que el carrito no esté vacío
+  if (carrito.length === 0) {
+    return; // Simplemente retorna sin hacer nada si el carrito está vacío
+  }
+
+  // Verificar que el índice sea válido
+  if (index < 0 || index >= carrito.length) {
+    return; // Retorna sin hacer nada si el índice no es válido
+  }
+
   const productoEliminado = carrito[index].producto; // Obtener el nombre del producto a eliminar
   carrito.splice(index, 1); // Eliminar el producto en el índice especificado
   localStorage.setItem('carrito', JSON.stringify(carrito)); // Actualizar el localStorage
